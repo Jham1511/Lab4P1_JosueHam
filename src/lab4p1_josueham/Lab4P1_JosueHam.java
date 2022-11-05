@@ -1,4 +1,4 @@
-package lab4p1_josueham;
+package lab4p1_josueham; //git
 
 import java.util.Scanner;
 
@@ -35,7 +35,8 @@ public class Lab4P1_JosueHam {
                     
                     case 2: {    
                         System.out.println("Ingrese la primera cadena: ");
-                        String cadena_1 = leer.next().toLowerCase();
+                        leer.nextLine();
+                        String cadena_1 = leer.nextLine().toLowerCase();
                         System.out.println("Ingrese la segunda cadena: ");
                         String cadena_2 = leer.next().toLowerCase();
                         contains(cadena_1, cadena_2);
@@ -45,11 +46,12 @@ public class Lab4P1_JosueHam {
                     
                     case 3: {
                         System.out.println("Ingrese su cadena: ");
-                        String cadena = leer.next().toLowerCase();
+                        leer.nextLine();
+                        String cadena = leer.nextLine().toLowerCase();
                         is_alpha (cadena);
-                        
+                         
                     }//Fin case 3
-                    break; 
+                        break; 
                     
                     default: 
                         System.out.println("Saliendo del programa...");
@@ -57,41 +59,92 @@ public class Lab4P1_JosueHam {
         }while (opcion!=4);
     }//Fin main
     
+    
     public static void binarios (String cadena_1, String cadena_2){
         
-        for (int i = 0; i < cadena_1.length(); i++) {
-            
-        }//Fin for
+        
+         // Validacion de que las cadenas sean del mismo tamano
+       if (cadena_1.length() == cadena_2.length()) {
+            boolean valida1 = true, valida2 = true;
+            for (int i = 0; i < cadena_1.length(); i++) {
+                if (cadena_1.charAt(i) != '1' && cadena_1.charAt(i) != '0')
+                    valida1 = false;
+                if (cadena_2.charAt(i) != '1' && cadena_2.charAt(i) != '0')
+                    valida2 = false;
+            }
+            // Validacion de que las cadenas contengan solo 1s y 0s
+            if (valida1 && valida2) {
+                String suma = "";
+                boolean lleva = false;
+                for (int i = cadena_1.length()-1; i >= 0; i--) {
+                    String numeros = "" + cadena_1.charAt(i) + cadena_2.charAt(i);
+                    if (numeros.contains("10") || numeros.contains("01")) {
+                        suma += '1';
+                        lleva = false;
+                    }
+                    else if (numeros.contains("00")) {
+                        suma += '0';
+                        lleva = false;
+                    }
+                    else if (numeros.contains("11")) {
+                        if (lleva)
+                            suma += '1';
+                        suma += '0';
+                        lleva = true;
+                    }
+                    
+                }
+                System.out.println("La suma es: " + suma);
+            }
+            else {
+                if (!valida1 && valida2)
+                    System.out.println("El primer número contiene caracteres distintos de '0' y '1'.");
+                else if (valida1 && !valida2)
+                    System.out.println("El segundo número contiene caracteres distintos de '0' y '1'.");
+                else
+                    System.out.println("Las cadenas contiene caracteres distintos de '0' y '1'.");
+            }
+        }
+        else {
+            System.out.println("Los números deben de tener el mismo número de bits.");
+        }
+       
+       
+        
+        
     }//Fin metodo binarios
     
     
     
     public static void contains (String cadena_1, String cadena_2){
+        if (cadena_1.length() > cadena_2.length()) {
+            int cont = 0;
         
-        
-        String nuevo = " ";
-        
-            for (int i = 0; i < cadena_2.length(); i++) {
-             boolean esta = false; 
-                for (int j = 0; j < cadena_1.length(); j++) {
-                    if (cadena_1.charAt(i) == cadena_2.charAt(j)){
-                        esta = true;
+            for (int i = 0; i < cadena_1.length(); i++) {
+                if (cont == cadena_2.length()) {
+                    break;
                 }
-                    if (esta){
-                        nuevo+= cadena_1.charAt(i);
-                    }
-              }
+                if (cadena_1.charAt(i)== cadena_2.charAt(cont)) {
+                   cont++; 
+                }
+                else if (cont > 0 && cadena_1.charAt(i)!=cadena_2.charAt(cont)){
+                    cont = 0;
+                }
+              
+            }//Fin for
+            
+            if (cont == cadena_2.length()) {
+                System.out.println("La palabra " + cadena_1 + " contiene a la cadena " + cadena_2);
             }
-           
-            if (cadena_2.equals(nuevo))
-                System.out.println("La palabra " + cadena_1 + " no contiene a la cadena " + cadena_2);
             else {
-                System.out.println("La palabra " + cadena_1 + " contiene la cadena " + cadena_2 );
-                }
+                System.out.println("La palabra " + cadena_1 + " no contiene a la cadena " + cadena_2);
+            }
+        }//Fin if validacion 
+        else {
+            System.out.println("El tamaño de la segunda cadena no puede ser mayor que el de la primera.");
+        }//Fin else
+
         
-        if(cadena_2.length() > cadena_1.length());{
-            System.out.println("La cadena 2 (contenida) no puede ser mayor que la cadena 1 (contenedor)");
-        }//Fin if validacion
                   
     }//Fin metodo contains
     
@@ -109,6 +162,7 @@ public class Lab4P1_JosueHam {
                    cont_1++;
                }//Fin else
         }//Fin for j
+            
         if (cont_1 > 0){
             System.out.println("La palabra contiene caracteres que no son letras");
         }
